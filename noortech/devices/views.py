@@ -28,5 +28,20 @@ def add_device(request):
         "client_id":device_obj.client_id,
         "pub_id":device_obj.pub_id,
         "sub_id":device_obj.sub_id,
-        "qrcode":"http://127.0.0.1:8000/media/"+str(device_obj.code)
+        "qrcode":"http://167.71.61.186:8081/media/"+str(device_obj.code)
     })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_device(request):
+    my_id=request.data.get("id")
+    try:
+        device_obj=Devices.objects.get(id=my_id)
+        return response_200({
+            "client_id":device_obj.client_id,
+            "pub_id":device_obj.pub_id,
+            "sub_id":device_obj.sub_id,
+            "qrcode":"http://167.71.61.186:8081/media/"+str(device_obj.code)})
+    except ObjectDoesNotExist as e:
+        return response_400("Device not found")
